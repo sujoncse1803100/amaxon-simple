@@ -1,24 +1,28 @@
 import React from 'react';
 import './Cart.css'
 
+
 const Cart = (props) => {
 
-    console.log(props);
-    const value = (props.cart.reduce((value, pd) =>  pd.price, 0));
-    const total = (props.cart.reduce((total, pd) => total +  pd.price, 0));
+    console.log(props.cart);
+    const value = (props.cart.reduce((value, pd) => {
+        const val = Number(pd.quantity * pd.price);
+        // debugger;
+        return val;
+    }, 0));
+    const total = (props.cart.reduce((total, pd) => total + Number(pd.quantity * pd.price), 0));
+
     let shop = 0;
     if (value > 35) {
         shop = 0;
     } else if (value > 15) {
         shop = 4.99;
-    } else if(value >0){
+    } else if (value > 0) {
         shop = 12.99
     }
 
     const newTotal = (total + shop);
-
-    const tax = (newTotal/10);
-
+    const tax = (newTotal / 10);
     const finalTotal = (newTotal + tax);
 
     const formatNumber = (num) => {
@@ -28,12 +32,12 @@ const Cart = (props) => {
 
     return (
         <div >
-            <div className="my-cart-container">
+            <div className="my-cart-container mt-3">
                 <div className="left">
                     <span>Items :</span>
                 </div>
                 <div className="right">
-                    <span>${ formatNumber(value) }</span>
+                    <span>${formatNumber(value)}</span>
                 </div>
             </div><br />
             <div className="my-cart-container">
@@ -41,7 +45,7 @@ const Cart = (props) => {
                     <span>Shipping  :</span>
                 </div>
                 <div className="right">
-                    <span>${ formatNumber(shop) }</span>
+                    <span>${formatNumber(shop)}</span>
                 </div>
             </div><br />
             <div className="my-cart-container">
@@ -49,7 +53,7 @@ const Cart = (props) => {
                     <span>Total befor tax :</span>
                 </div>
                 <div className="right">
-                    <span>${ formatNumber(newTotal) }</span>
+                    <span>${formatNumber(newTotal)}</span>
                 </div>
             </div><br />
             <div className="my-cart-container">
@@ -57,7 +61,7 @@ const Cart = (props) => {
                     <span>Estimated tax :</span>
                 </div>
                 <div className="right">
-                    <span>${ formatNumber(tax) }</span>
+                    <span>${formatNumber(tax)}</span>
                 </div>
             </div><br />
             <div className="my-cart-container">
@@ -65,9 +69,12 @@ const Cart = (props) => {
                     <span className="total">Order Total :</span>
                 </div>
                 <div className="right">
-                    <span className="total">${ formatNumber(finalTotal) }</span>
+                    <span className="total">${formatNumber(finalTotal)}</span>
                 </div>
             </div><br />
+            {
+                props.children
+            }
         </div>
     );
 };

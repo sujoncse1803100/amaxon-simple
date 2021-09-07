@@ -44,7 +44,7 @@ const Shop = () => {
     const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
 
     return (
-        <div className="row ms-3">
+        <div className="row ">
             <div className="col-md-9 product-container">
                 {
                     products.map((p) => <Product key={p.key} showAddToCart={true} handleAddProduct={handleAddProduct} product={p}></Product>)

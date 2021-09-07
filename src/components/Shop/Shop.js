@@ -8,10 +8,6 @@ import { getDatabaseCart } from '../../utilities/databaseManager'
 import { Link } from 'react-router-dom';
 
 const Shop = () => {
-    // console.log(fakeData);
-    // const first10 = fakeData.slice(0, 20);
-    // const [products, setProducts] = useState(first10);
-
     const products = fakeData.slice(0, 20);
     const [cart, setCart] = useState([]);
 
@@ -27,7 +23,6 @@ const Shop = () => {
     }, []);
 
     const handleAddProduct = (product) => {
-        // console.log("product added", product);
         const toBeAddedkey = product.key;
 
         const sameProduct = cart.find(pd => pd.key === toBeAddedkey);
@@ -39,38 +34,28 @@ const Shop = () => {
             sameProduct.quantity = count;
             const others = cart.filter(pd => pd.key !== toBeAddedkey);
             newCart = [...others, sameProduct];
-            // newCart = [...cart, product];
         } else {
             product.quantity = count;
             newCart = [...cart, product];
         }
-
         setCart(newCart);
         addToDatabaseCart(product.key, count);
-
     }
-
     const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
-
 
     return (
         <div className="row ms-3">
             <div className="col-md-9 product-container">
-
                 {
                     products.map((p) => <Product key={p.key} showAddToCart={true} handleAddProduct={handleAddProduct} product={p}></Product>)
                 }
-
             </div>
             <div className="col-md-3">
-                {/* <p>Total order  : {cart.length}</p> */}
                 <p>Total order  : {totalOrder}</p>
-
                 <Cart cart={cart}>
                     <Link to="/review"><button className="btn btn-danger rounded-pill">Review Order</button></Link>
                 </Cart>
             </div>
-
         </div>
     );
 };

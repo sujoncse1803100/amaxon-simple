@@ -4,10 +4,8 @@ import './Cart.css'
 
 const Cart = (props) => {
 
-    console.log(props.cart);
     const value = (props.cart.reduce((value, pd) => {
         const val = Number(pd.quantity * pd.price);
-        // debugger;
         return val;
     }, 0));
     const total = (props.cart.reduce((total, pd) => total + Number(pd.quantity * pd.price), 0));

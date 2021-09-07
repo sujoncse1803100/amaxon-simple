@@ -4,6 +4,7 @@ import { getDatabaseCart, processOrder, removeFromDatabaseCart } from '../../uti
 import Cart from '../Cart/Cart';
 import REviewItems from '../ReviewItem/REviewItems';
 import placeOrderImage from '../../images/giphy.gif';
+import { addToDatabaseCart } from '../../utilities/databaseManager';
 
 
 const Review = () => {
@@ -25,10 +26,43 @@ const Review = () => {
     }, [])
 
     const handleRemoveProduct = (productKeys) => {
-        console.log("product remove ", productKeys);
-        const newcart = cart.filter(pd => pd.key !== productKeys);
-        setCart(newcart);
-        removeFromDatabaseCart(productKeys);
+        // console.log("product remove ", productKeys);
+        const product = cart.find(pd => pd.key === productKeys);
+        const counts = product.quantity;
+        if (counts > 1) {
+            product.quantity = counts - 1;
+            const newcart = cart.filter(pd => pd);
+            setCart(newcart);
+        } else {
+            const newcart = cart.filter(pd => pd.key !== productKeys);
+            setCart(newcart);
+            removeFromDatabaseCart(productKeys);
+        }
+    }
+
+
+    const handleAddProduct = (product) => {
+        // console.log("product added", product);
+        const toBeAddedkey = product.key;
+
+        const sameProduct = cart.find(pd => pd.key === toBeAddedkey);
+        let count = 1;
+        let newCart;
+
+        if (sameProduct) {
+            count = sameProduct.quantity + 1;
+            sameProduct.quantity = count;
+            const others = cart.filter(pd => pd.key !== toBeAddedkey);
+            newCart = [...others, sameProduct];
+            // newCart = [...cart, product];
+        } else {
+            product.quantity = count;
+            newCart = [...cart, product];
+        }
+
+        setCart(newCart);
+        addToDatabaseCart(product.key, count);
+
     }
 
     const style = {
@@ -41,6 +75,8 @@ const Review = () => {
         processOrder();
     }
 
+    const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
+
     let thankYou;
     if (orderPlaced) {
         thankYou = <img src={placeOrderImage} alt="" />
@@ -51,12 +87,12 @@ const Review = () => {
             <div className="row ms-3">
                 <div style={style} className="col-md-9">
                     {
-                        cart.map(pd => <REviewItems handleRemoveProduct={handleRemoveProduct} key={pd.key} product={pd} />)
+                        cart.map(pd => <REviewItems handleAddProduct={handleAddProduct} handleRemoveProduct={handleRemoveProduct} key={pd.key} product={pd} />)
                     }
                     {thankYou}
                 </div>
                 <div className="col-md-3">
-                    <p>Total order  : {cart.length}</p>
+                    <p>Total order  : {totalOrder}</p>
                     <Cart cart={cart}>
                         <button
                             onClick={orderPlaceButton}

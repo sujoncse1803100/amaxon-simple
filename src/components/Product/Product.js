@@ -30,7 +30,7 @@ const Product = (props) => {
                         <p>by {props.product.seller}</p>
                         <p><strong>${props.product.price}</strong></p>
                         <p>Only {props.product.stock} stock</p>
-                        {props.showAddToCart && <button className="button"
+                        {props.showAddToCart && <button className="btn btn-success"
                             onClick={() => props.handleAddProduct(props.product)}
                         >
                             <span className="fontawesome">

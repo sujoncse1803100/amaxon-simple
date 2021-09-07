@@ -21,22 +21,40 @@ const REviewItems = (props) => {
 
             <div className="desc-container">
                 <h5><Link to={"/product/" + props.product.key}>{name}</Link></h5>
-                <div className="desc">
-                    <div className="desc-left">
+                <div className="">
+                    <div className="">
                         <span>by {props.product.seller}</span><br />
                         <span><strong>Price : ${price}</strong></span><br />
                         <span><strong>Order quantity : {quantity}</strong></span><br />
                         <span><strong>Total price : ${quantity * price}</strong></span>
                         <p></p>
 
-                        {<button className="button"
-                            onClick={() => props.handleRemoveProduct(key)}
-                        >
-                            <span className="fontawesome">
-                                <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
-                            </span>
-                            remove
-                        </button>}
+                        <div className="d-flex">
+                            {
+                                <button className="btn btn-success rounded"
+                                    onClick={() => props.handleRemoveProduct(key)}
+                                >
+                                    {/* <span className="fontawesome">
+                                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                                    </span> */}
+                                    -1
+                                </button>
+
+
+                            }
+                            <span className="ms-3 me-3"><h3>  {quantity} </h3></span>
+                            {
+                                <button className="btn btn-success rounded"
+                                    onClick={() => props.handleAddProduct(props.product)}
+                                >
+                                    {/* <span className="fontawesome">
+                                        <FontAwesomeIcon icon={faShoppingCart}></FontAwesomeIcon>
+                                    </span> */}
+                                    +1
+                                </button>
+                            }
+                        </div>
+
                     </div>
 
 

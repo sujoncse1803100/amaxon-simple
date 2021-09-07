@@ -9,8 +9,10 @@ import { Link } from 'react-router-dom';
 
 const Shop = () => {
     // console.log(fakeData);
-    const first10 = fakeData.slice(0, 20);
-    const [products, setProducts] = useState(first10);
+    // const first10 = fakeData.slice(0, 20);
+    // const [products, setProducts] = useState(first10);
+
+    const products = fakeData.slice(0, 20);
     const [cart, setCart] = useState([]);
 
     useEffect(() => {
@@ -37,6 +39,7 @@ const Shop = () => {
             sameProduct.quantity = count;
             const others = cart.filter(pd => pd.key !== toBeAddedkey);
             newCart = [...others, sameProduct];
+            // newCart = [...cart, product];
         } else {
             product.quantity = count;
             newCart = [...cart, product];
@@ -46,6 +49,8 @@ const Shop = () => {
         addToDatabaseCart(product.key, count);
 
     }
+
+    const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
 
 
     return (
@@ -58,7 +63,9 @@ const Shop = () => {
 
             </div>
             <div className="col-md-3">
-                <p>Total order  : {cart.length}</p>
+                {/* <p>Total order  : {cart.length}</p> */}
+                <p>Total order  : {totalOrder}</p>
+
                 <Cart cart={cart}>
                     <Link to="/review"><button className="btn btn-danger rounded-pill">Review Order</button></Link>
                 </Cart>

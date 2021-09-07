@@ -1,8 +1,7 @@
-import React, { Component } from 'react';
 import logo from '../../images/logo.png';
 
 const Header = () => {
-    
+
     return (
         <div className="header">
             <img className="header-logo" src={logo} alt="" />

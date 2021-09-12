@@ -51,7 +51,7 @@ const Shop = () => {
                 }
             </div>
             <div className="col-md-3">
-                hi
+
                 <p>Total order  : {totalOrder}</p>
                 <Cart cart={cart}>
                     <Link to="/review"><button className="btn btn-danger rounded-pill">Review Order</button></Link>

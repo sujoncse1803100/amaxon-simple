@@ -10,13 +10,29 @@ import {
   Route
 } from "react-router-dom";
 import ProductDetails from './components/Product Details/ProductDetails';
+import Login from './components/Login/Login';
+import Shipment from './components/Shipment/Shipment';
+import { createContext, useState } from 'react';
+import PrivateRoute from './components/PrivateRoute/PrivetRoute';
+export const UserContext = createContext();
 
 function App() {
 
+  const [userLoggedIn, setUserLoggedIn] = useState({});
+
   return (
-    <div>
-      <Header></Header>
+    <UserContext.Provider value={[userLoggedIn, setUserLoggedIn]}>
+      {
+        userLoggedIn.email &&
+        <div className="mt-3 text-center w-100">
+          <img style={{ width: '100px', borderRadius: '50%' }} src={userLoggedIn.photoURL} alt="" />
+          <h3 className="mb-1 mt-1" style={{ fontStyle: 'italic' }} >Welcome, Mr. {userLoggedIn.displayName}</h3>
+          <h4>Email : {userLoggedIn.email}</h4>
+        </div>
+      }
+
       <Router>
+        <Header></Header>
         <Switch>
 
           <Route path="/shop" >
@@ -27,9 +43,17 @@ function App() {
             <Review />
           </Route>
 
-          <Route path="/manage" >
+          <PrivateRoute path="/manage" >
             <Manage />
+          </PrivateRoute>
+
+          <Route path="/login" >
+            <Login />
           </Route>
+
+          <PrivateRoute path="/shipment" >
+            <Shipment />
+          </PrivateRoute>
 
           <Route exact path="/" >
             <Shop />
@@ -48,7 +72,7 @@ function App() {
       </Router>
 
 
-    </div>
+    </UserContext.Provider>
   );
 }
 

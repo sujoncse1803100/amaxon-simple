@@ -1,16 +1,20 @@
 import React, { useState, useEffect } from 'react';
 import fakeData from '../../fakeData';
-import { getDatabaseCart, processOrder, removeFromDatabaseCart } from '../../utilities/databaseManager'
+import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager'
 import Cart from '../Cart/Cart';
-import REviewItems from '../ReviewItem/REviewItems';
+import ReviewItems from '../ReviewItem/ReviewItems';
 import placeOrderImage from '../../images/giphy.gif';
 import { addToDatabaseCart } from '../../utilities/databaseManager';
+import { useHistory } from 'react-router';
 
 
 const Review = () => {
 
     const [cart, setCart] = useState([]);
     const [orderPlaced, setOrderPlaced] = useState(false);
+    // setOrderPlaced(orderPlaced); ///for this...too many re-render problem created
+
+    const history = useHistory();
 
     useEffect(() => {
         const savedCart = getDatabaseCart();
@@ -42,7 +46,6 @@ const Review = () => {
 
 
     const handleAddProduct = (product) => {
-        // console.log("product added", product);
         const toBeAddedkey = product.key;
 
         const sameProduct = cart.find(pd => pd.key === toBeAddedkey);
@@ -54,7 +57,6 @@ const Review = () => {
             sameProduct.quantity = count;
             const others = cart.filter(pd => pd.key !== toBeAddedkey);
             newCart = [...others, sameProduct];
-            // newCart = [...cart, product];
         } else {
             product.quantity = count;
             newCart = [...cart, product];
@@ -69,10 +71,8 @@ const Review = () => {
         borderRight: '1px solid black'
     }
 
-    const orderPlaceButton = () => {
-        setCart([]);
-        setOrderPlaced(true);
-        processOrder();
+    const orderProceedCheckout = () => {
+        history.push('/shipment');
     }
 
     const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
@@ -87,7 +87,7 @@ const Review = () => {
             <div className="row ms-3">
                 <div style={style} className="col-md-9">
                     {
-                        cart.map(pd => <REviewItems handleAddProduct={handleAddProduct} handleRemoveProduct={handleRemoveProduct} key={pd.key} product={pd} />)
+                        cart.map(pd => <ReviewItems handleAddProduct={handleAddProduct} handleRemoveProduct={handleRemoveProduct} key={pd.key} product={pd} />)
                     }
                     {thankYou}
                 </div>
@@ -95,9 +95,9 @@ const Review = () => {
                     <p>Total order  : {totalOrder}</p>
                     <Cart cart={cart}>
                         <button
-                            onClick={orderPlaceButton}
-                            className="btn btn-danger m-5 rounded-pill">
-                            place order
+                            onClick={orderProceedCheckout}
+                            className="btn btn-danger  rounded-pill">
+                            Proceed CheckOut
                         </button>
                     </Cart>
                 </div>

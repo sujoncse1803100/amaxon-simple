@@ -4,7 +4,7 @@ import '../Product/Product.css';
 import { Link } from 'react-router-dom';
 
 
-const REviewItems = (props) => {
+const ReviewItems = (props) => {
     const { img, name, price, quantity, key } = props.product;
 
     return (
@@ -45,4 +45,4 @@ const REviewItems = (props) => {
     );
 };
 
-export default REviewItems;
+export default ReviewItems;

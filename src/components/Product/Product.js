@@ -24,7 +24,7 @@ const Product = (props) => {
             </div>
 
             <div className="desc-container">
-                <h5><Link to={"/product/" + props.product.key}>{props.product.name}</Link></h5>
+                <h4><Link to={"/product/" + props.product.key}>{props.product.name}</Link></h4>
                 <div className="desc">
                     <div className="desc-left">
                         <p>by {props.product.seller}</p>

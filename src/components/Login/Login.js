@@ -20,9 +20,9 @@ function Login() {
         error: '',
     })
 
-
     const [userLoggedIn, setUserLoggedIn] = useContext(UserContext);
     setUserLoggedIn(userLoggedIn);
+
     const history = useHistory();
     const location = useLocation();
     let { from } = location.state || { from: { pathname: "/" } };
@@ -74,7 +74,6 @@ function Login() {
         e.preventDefault(); //for prevent reload page.......
     }
 
-
     const handleBlur = (e) => {
         let isFieldValid;
 
@@ -110,7 +109,6 @@ function Login() {
                 <Link to="/shipment"></Link>
             }
             <div className="mt-3">
-                {/* <h2>Our own Authentication</h2> */}
                 <input style={{ fontSize: '2rem' }} onChange={() => setNewUser(!newUser)} type="checkbox" name="newUser" />
                 <label style={{ fontSize: '1.2rem', marginLeft: '20px', marginBottom: '30px' }} htmlFor="newUser">I am new user </label>
                 <div className="col-lg-6 col-12 ps-5 pe-5 m-auto">
@@ -118,7 +116,7 @@ function Login() {
                         {newUser &&
                             <input
                                 className="mt-1 text-center form-control ps-2"
-                                name="name" id="nameId"
+                                name="displayName" id="nameId"
                                 type="text" required
                                 onBlur={handleBlur}
                                 placeholder="Your Name"

@@ -82,7 +82,7 @@ export const signUpEmailAndPassword = (name, email, password) => {
             const newUser = user;
             newUser.error = '';
             newUser.success = 'user created successfully';
-            upateUserName(name)
+            upateUserName(name);
             return newUser;
         })
         .catch((error) => {
@@ -94,17 +94,19 @@ export const signUpEmailAndPassword = (name, email, password) => {
 
 export const signInEmailAndPassword = (email, password) => {
     const auth = getAuth();
-    signInWithEmailAndPassword(auth, email, password)
+    return signInWithEmailAndPassword(auth, email, password)
         .then((userCredential) => {
-            const user = userCredential.user;
-            const newUser = user;
+            const newUser = userCredential.user;
+            // const newUser = user;
             newUser.error = '';
             newUser.success = 'Logged in successfully';
+            console.log(newUser.success);
             return newUser;
         })
         .catch((error) => {
             const newUser = {};
             newUser.error = error.message;
+            console.log(error.message);
             return newUser;
         });
 }
@@ -112,7 +114,8 @@ export const signInEmailAndPassword = (email, password) => {
 export const upateUserName = (name) => {
     const auth = getAuth();
     updateProfile(auth.currentUser, {
-        displayName: { name }, photoURL: "https://example.com/jane-q-user/profile.jpg"
+        displayName: name,
+        photoURL: "https://example.com/jane-q-user/profile.jpg"
     }).then(() => {
         console.log("Profile Updated Successfully");
     }).catch((error) => {

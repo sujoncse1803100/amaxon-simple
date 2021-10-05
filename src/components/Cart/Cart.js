@@ -1,7 +1,6 @@
 import React from 'react';
 import './Cart.css'
 
-
 const Cart = (props) => {
 
     const value = (props.cart.reduce((value, pd) => {

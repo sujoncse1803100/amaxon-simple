@@ -6,7 +6,17 @@ import firebase from 'firebase/compat/app';
 import 'firebase/compat/auth';
 import 'firebase/compat/firestore';
 import firebaseConfig from './FirebaseConfig';
-import { getAuth, FacebookAuthProvider, signOut, updateProfile, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+    getAuth,
+    FacebookAuthProvider,
+    sendEmailVerification,
+    signOut, updateProfile,
+    signInWithEmailAndPassword,
+    signInWithPopup,
+    GoogleAuthProvider,
+    createUserWithEmailAndPassword,
+    sendPasswordResetEmail
+} from "firebase/auth";
 
 export const initializedLoginFramework = () => {
     if (!firebase.apps.length) {
@@ -83,6 +93,7 @@ export const signUpEmailAndPassword = (name, email, password) => {
             newUser.error = '';
             newUser.success = 'user created successfully';
             upateUserName(name);
+            verifyEmail();
             return newUser;
         })
         .catch((error) => {
@@ -108,6 +119,26 @@ export const signInEmailAndPassword = (email, password) => {
             newUser.error = error.message;
             console.log(error.message);
             return newUser;
+        });
+}
+
+const verifyEmail = () => {
+    const auth = getAuth();
+    sendEmailVerification(auth.currentUser)
+        .then(() => {
+            // Email verification sent!
+            // ...
+        });
+}
+
+export const resetPasswords = (email) => {
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, email)
+        .then(() => {
+
+        })
+        .catch((error) => {
+
         });
 }
 

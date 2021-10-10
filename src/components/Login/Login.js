@@ -1,13 +1,16 @@
-import { useContext, useState } from 'react';
+import { useContext, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { UserContext } from '../../App';
 import { useHistory, useLocation } from 'react-router';
-import { handleFacebookSignIn, handleGoogleSignIn, handleSignOut, initializedLoginFramework, signInEmailAndPassword, signUpEmailAndPassword } from './LoginManager';
+import { handleFacebookSignIn, handleGoogleSignIn, handleSignOut, initializedLoginFramework, resetPasswords, signInEmailAndPassword, signUpEmailAndPassword } from './LoginManager';
 
 initializedLoginFramework();
 
 
 function Login() {
+    const nameRef = useRef();
+    const emailRef = useRef();
+    const passwordRef = useRef();
 
     const [newUser, setNewUser] = useState(false);
     const [user, setUser] = useState({
@@ -21,7 +24,7 @@ function Login() {
     })
 
     const [userLoggedIn, setUserLoggedIn] = useContext(UserContext);
-    setUserLoggedIn(userLoggedIn);
+    // setUserLoggedIn(userLoggedIn);
 
     const history = useHistory();
     const location = useLocation();
@@ -61,7 +64,13 @@ function Login() {
         if (newUser && user.email && user.password) {
             signUpEmailAndPassword(user.displayName, user.email, user.password)
                 .then(res => {
-                    handleResponse(res, true);
+                    // handleResponse(res, true);
+                    // setUser(res);
+                    // setUserLoggedIn(res);
+                    nameRef.current.value = '';
+                    emailRef.current.value = '';
+                    passwordRef.current.value = '';
+                    history.push('/login');
                 })
         }
 
@@ -100,8 +109,6 @@ function Login() {
 
     }
 
-
-
     return (
         <div className="text-center">
             {
@@ -109,8 +116,13 @@ function Login() {
                 <Link to="/shipment"></Link>
             }
             <div className="mt-3">
-                <input style={{ fontSize: '2rem' }} onChange={() => setNewUser(!newUser)} type="checkbox" name="newUser" />
-                <label style={{ fontSize: '1.2rem', marginLeft: '20px', marginBottom: '30px' }} htmlFor="newUser">I am new user </label>
+                {
+                    // !newUser &&
+                    <>
+                        <input style={{ fontSize: '2rem' }} onChange={() => setNewUser(!newUser)} type="checkbox" name="newUser" />
+                        <label style={{ fontSize: '1.2rem', marginLeft: '20px', marginBottom: '30px' }} htmlFor="newUser">I am new user </label>
+                    </>
+                }
                 <div className="col-lg-6 col-12 ps-5 pe-5 m-auto">
                     <form onSubmit={handleSubmit} style={{ boxShadow: '0px 5px 7px 7px gray' }} className="border border-secondary p-3 bg-warning rounded">
                         {newUser &&
@@ -120,6 +132,7 @@ function Login() {
                                 type="text" required
                                 onBlur={handleBlur}
                                 placeholder="Your Name"
+                                ref={nameRef}
                             />
                         }
                         <br />
@@ -129,6 +142,7 @@ function Login() {
                             type="email" required
                             onBlur={handleBlur}
                             placeholder="Email Address"
+                            ref={emailRef}
                         /><br />
                         <input
                             className="text-center form-control ps-2"
@@ -136,9 +150,12 @@ function Login() {
                             type="password" required
                             onBlur={handleBlur}
                             placeholder="Password"
+                            ref={passwordRef}
                         /><br />
                         <input className="mt-1 text-center form-control w-50 m-auto btn-success" type="submit" value={newUser ? 'Sign Up' : 'Sign In'} />
                     </form>
+
+                    <button onClick={() => resetPasswords(user.email)}>Reset Password</button>
 
                     <div className="mt-3">
                         {

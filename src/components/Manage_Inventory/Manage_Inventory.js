@@ -5,7 +5,7 @@ const Manage_Inventory = () => {
 
     const handleAddProduct = () => {
 
-        fetch('http://localhost:3001/addProduct', {
+        fetch('https://stormy-chamber-95780.herokuapp.com/addProduct', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

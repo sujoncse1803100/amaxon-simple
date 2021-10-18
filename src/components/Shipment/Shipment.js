@@ -25,7 +25,7 @@ const Shipment = () => {
         console.log(orderDetails);
 
 
-        fetch('http://localhost:3001/addOrder', {
+        fetch('https://stormy-chamber-95780.herokuapp.com/addOrder', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

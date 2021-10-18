@@ -10,7 +10,7 @@ const ProductDetails = () => {
 
     useEffect(() => {
 
-        fetch('http://localhost:3001/product/' + productkey)
+        fetch('https://stormy-chamber-95780.herokuapp.com/product/' + productkey)
             .then(res => res.json())
             .then(result => {
                 setProduct(result);

@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import fakeData from '../../fakeData';
 import { getDatabaseCart, removeFromDatabaseCart } from '../../utilities/databaseManager'
 import Cart from '../Cart/Cart';
 import ReviewItems from '../ReviewItem/ReviewItems';
@@ -17,26 +16,40 @@ const Review = () => {
     const history = useHistory();
 
     useEffect(() => {
+
         const savedCart = getDatabaseCart();
-        // console.log(savedCart);
         const productKeys = Object.keys(savedCart);
 
-        const cartProducts = productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key === key);
-            product.quantity = savedCart[key];
-            return product;
-        });
-        setCart(cartProducts);
+        fetch('http://localhost:3001/productsByKeys', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productKeys)
+        })
+            .then(res => res.json())
+            .then(data => {
+                console.log('Data : ', data);
+                const cartProducts = productKeys.map(key => {
+                    const product = data.find(pd => pd.key === key);
+                    product.quantity = savedCart[key];
+                    return product;
+                });
+                setCart(cartProducts);
+            })
+            .catch((error => console.log(error)));
     }, [])
 
+
+
     const handleRemoveProduct = (productKeys) => {
-        // console.log("product remove ", productKeys);
         const product = cart.find(pd => pd.key === productKeys);
         const counts = product.quantity;
         if (counts > 1) {
             product.quantity = counts - 1;
             const newcart = cart.filter(pd => pd);
             setCart(newcart);
+            addToDatabaseCart(product.key, product.quantity);
         } else {
             const newcart = cart.filter(pd => pd.key !== productKeys);
             setCart(newcart);
@@ -64,7 +77,6 @@ const Review = () => {
 
         setCart(newCart);
         addToDatabaseCart(product.key, count);
-
     }
 
     const style = {
@@ -75,7 +87,7 @@ const Review = () => {
         history.push('/shipment');
     }
 
-    const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
+    let totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);;
 
     let thankYou;
     if (orderPlaced) {

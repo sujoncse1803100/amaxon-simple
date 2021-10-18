@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import fakeData from '../../fakeData';
 import Product from '../Product/Product';
 import './Shop.css'
 import Cart from '../Cart/Cart';
@@ -8,19 +7,53 @@ import { getDatabaseCart } from '../../utilities/databaseManager'
 import { Link } from 'react-router-dom';
 
 const Shop = () => {
-    const products = fakeData.slice(0, 20);
+    const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+
+    useEffect(() => {
+        fetch('http://localhost:3001/products')
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }, [])
+
+
 
     useEffect(() => {
         const savedCart = getDatabaseCart();
         const productKeys = Object.keys(savedCart);
-        const prev_products = productKeys.map(key => {
-            const product = fakeData.find(pd => pd.key === key);
-            product.quantity = savedCart[key];
-            return product;
+
+
+        fetch('http://localhost:3001/productsByKeys', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(productKeys)
         })
-        setCart(prev_products);
-    }, []);
+            .then(res => res.json())
+            .then(data => {
+                console.log('Data : ', data);
+                const cartProducts = productKeys.map(key => {
+                    const product = data.find(pd => pd.key === key);
+                    product.quantity = savedCart[key];
+                    return product;
+                });
+                setCart(cartProducts);
+            })
+            .catch((error => console.log(error)));
+
+        // if (products.length) {
+        //     const prev_products = productKeys.map(key => {
+        //         const product = products.find(pd => pd.key === key);
+        //         product.quantity = savedCart[key];
+        //         return product;
+        //     })
+        //     setCart(prev_products);
+        // }
+
+
+    }, [products]);
 
     const handleAddProduct = (product) => {
         const toBeAddedkey = product.key;

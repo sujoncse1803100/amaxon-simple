@@ -7,10 +7,6 @@ const Header = () => {
 
     const [userLoggedIn, setUserLoggedIn] = useContext(UserContext);
 
-    // const handleSignout = () => {
-    //     setUserLoggedIn({});
-    // }
-
     return (
         <div className="header">
             <img className="header-logo" src={logo} alt="" />

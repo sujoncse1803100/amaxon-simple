@@ -1,14 +1,24 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import fakeData from '../../fakeData';
 import Product from '../Product/Product';
 
 
 
 const ProductDetails = () => {
     const { productkey } = useParams();
-    const product = fakeData.find(data => data.key === productkey);
-    console.log(product);
+    const [product, setProduct] = useState([]);
+
+    useEffect(() => {
+
+        fetch('http://localhost:3001/product/' + productkey)
+            .then(res => res.json())
+            .then(result => {
+                setProduct(result);
+            })
+            .catch(err => {
+                console.log('Error : ', err);
+            })
+    }, [productkey])
 
     const myStyle = {
         width: '100%',
@@ -22,7 +32,10 @@ const ProductDetails = () => {
             <hr style={{ width: '70%', margin: '0 auto' }} />
             <div className="row  d-flex justify-content-center">
                 <div className="col-md-9">
-                    <Product showAddToCart={false} product={product} />
+                    {
+                        product[0] &&
+                        <Product showAddToCart={false} product={product[0]} />
+                    }
                 </div>
 
             </div>

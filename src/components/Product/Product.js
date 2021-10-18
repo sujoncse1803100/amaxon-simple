@@ -45,6 +45,7 @@ const Product = (props) => {
                             <h1><b>Features</b></h1>
                             <div >
                                 {
+                                    // props.product.features.length &&
                                     props.product.features.map(f => <Features f={f} />)
                                 }
                             </div>

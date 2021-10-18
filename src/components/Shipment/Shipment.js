@@ -1,6 +1,8 @@
 import React, { useContext, useRef } from 'react';
 import { useForm } from 'react-hook-form';
+import { useHistory } from 'react-router';
 import { UserContext } from '../../App';
+import { getDatabaseCart, processOrder } from '../../utilities/databaseManager';
 
 const Shipment = () => {
     const nameRef = useRef();
@@ -8,15 +10,44 @@ const Shipment = () => {
     const addressRef = useRef();
     const phoneRef = useRef();
 
+    const history = useHistory();
+
     const [userLoggedIn, setUserLoggedIn] = useContext(UserContext);
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
     const onSubmit = data => {
+        const savedCart = getDatabaseCart();
+        const client = {
+            name: userLoggedIn.displayName,
+            email: userLoggedIn.email,
+            phoneURL: userLoggedIn.photoURL
+        }
+        const orderDetails = { client: client, products: savedCart, shipment: data, orderTime: new Date() };
+        console.log(orderDetails);
+
+
+        fetch('http://localhost:3001/addOrder', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(orderDetails)
+        })
+            .then(response => response.json())
+            .then(result => {
+                if (result) {
+                    processOrder();
+                    alert('Order successful');
+                    history.push('/shop')
+                }
+            })
+
+
         // nameRef.current.value = '';
         // emailRef.current.value = '';
         // addressRef.current.value = '';
         // phoneRef.current.value = '';
 
-        console.log(data)
+        console.log('shipment : ', data)
     };
 
 

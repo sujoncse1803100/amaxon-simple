@@ -7,6 +7,7 @@ const Cart = (props) => {
         const val = Number(pd.quantity * pd.price);
         return val;
     }, 0));
+
     const total = (props.cart.reduce((total, pd) => total + Number(pd.quantity * pd.price), 0));
 
     let shop = 0;

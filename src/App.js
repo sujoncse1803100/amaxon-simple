@@ -2,7 +2,7 @@ import './App.css';
 import Header from './components/Header/Header';
 import Review from './components/Review/Review';
 import Shop from './components/Shop/Shop';
-import Manage from './components/Manage/Manage.js';
+import Manage from './components/Manage_Inventory/Manage_Inventory.js';
 import NotFound from './components/NotFount/NotFount'
 import {
   BrowserRouter as Router,

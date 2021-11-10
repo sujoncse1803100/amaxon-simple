@@ -5,10 +5,13 @@ import Cart from '../Cart/Cart';
 import { addToDatabaseCart } from '../../utilities/databaseManager';
 import { getDatabaseCart } from '../../utilities/databaseManager'
 import { Link } from 'react-router-dom';
+// import CircularProgress from '@mui/material/CircularProgress';
 
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+
+    document.title = 'Shop more';
 
 
     useEffect(() => {
@@ -78,7 +81,10 @@ const Shop = () => {
 
     return (
         <div className="row ">
-            <div className="col-md-9 product-container">
+            <div className="col-md-9  product-container">
+                {
+                    products.length === 0 && <p className="mt-5 text-center">loading.........</p>
+                }
                 {
                     products.map((p) => <Product key={p.key} showAddToCart={true} handleAddProduct={handleAddProduct} product={p}></Product>)
                 }

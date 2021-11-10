@@ -11,6 +11,8 @@ const Review = () => {
 
     const [cart, setCart] = useState([]);
     const [orderPlaced, setOrderPlaced] = useState(false);
+    document.title = 'Review';
+
     // setOrderPlaced(orderPlaced); ///for this...too many re-render problem created
 
     const history = useHistory();

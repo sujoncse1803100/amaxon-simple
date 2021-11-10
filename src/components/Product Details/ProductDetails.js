@@ -7,6 +7,8 @@ import Product from '../Product/Product';
 const ProductDetails = () => {
     const { productkey } = useParams();
     const [product, setProduct] = useState([]);
+    document.title = 'Product Details';
+
 
     useEffect(() => {
 

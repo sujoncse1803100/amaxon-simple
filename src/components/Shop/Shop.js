@@ -10,15 +10,16 @@ import { Link } from 'react-router-dom';
 const Shop = () => {
     const [products, setProducts] = useState([]);
     const [cart, setCart] = useState([]);
+    const [search, setSearch] = useState('');
 
     document.title = 'Shop more';
 
 
     useEffect(() => {
-        fetch('https://stormy-chamber-95780.herokuapp.com/products')
+        fetch('https://stormy-chamber-95780.herokuapp.com/products?search=' + search)
             .then(res => res.json())
             .then(data => setProducts(data))
-    }, [])
+    }, [search])
 
 
 
@@ -36,7 +37,7 @@ const Shop = () => {
         })
             .then(res => res.json())
             .then(data => {
-                console.log('Data : ', data);
+                // console.log('Data : ', data);
                 const cartProducts = productKeys.map(key => {
                     const product = data.find(pd => pd.key === key);
                     product.quantity = savedCart[key];
@@ -79,14 +80,20 @@ const Shop = () => {
     }
     const totalOrder = cart.reduce((to, pd) => to + pd.quantity, 0);
 
+    const handleProductSearch = (e) => {
+        setSearch(e.target.value);
+    }
+
     return (
         <div className="row ">
             <div className="col-md-9  product-container">
+                <input type="text" placeholder="search-product " onBlur={handleProductSearch} className="form-control text-center product-search" />
                 {
                     products.length === 0 && <p className="mt-5 text-center">loading.........</p>
                 }
+
                 {
-                    products.map((p) => <Product key={p.key} showAddToCart={true} handleAddProduct={handleAddProduct} product={p}></Product>)
+                    products.map((p) => <Product showAddToCart={true} handleAddProduct={handleAddProduct} product={p}></Product>)
                 }
             </div>
             <div className="col-md-3">

@@ -6,9 +6,7 @@ const stripePromise = loadStripe('pk_test_51JunwYGtjqsSIbseG5USXFGniJCF6Va93HIS2
 
 
 const Payment = ({ handlePayment }) => {
-    const options = {
-        clientSecret: '{{CLIENT_SECRET}}',
-    };
+
 
     return (
         <Elements stripe={stripePromise}>
